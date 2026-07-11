@@ -190,17 +190,20 @@ def send_email_notification(subject, message_text):
     # 轉換換行符號以符合 HTML 格式
     html_content = f"<html><body><div style='font-family: sans-serif; line-height: 1.6;'>{message_text.replace(chr(10), '<br>')}</div></body></html>"
     
+    # 支援以逗號分隔的多筆收件者
+    recipient_emails = [email.strip() for email in RECIPIENT_EMAIL.split(",") if email.strip()]
+    to_list = [{"email": email, "name": "Flight Tracker Subscriber"} for email in recipient_emails]
+    
+    if not to_list:
+        print("錯誤：解析後無效的收件人信箱，無法發送 E-mail。")
+        return
+
     payload = {
         "sender": {
             "name": "Flight Tracker",
             "email": SENDER_EMAIL
         },
-        "to": [
-            {
-                "email": RECIPIENT_EMAIL,
-                "name": "Flight Tracker Subscriber"
-            }
-        ],
+        "to": to_list,
         "subject": subject,
         "htmlContent": html_content,
         "textContent": message_text

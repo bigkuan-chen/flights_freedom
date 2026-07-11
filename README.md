@@ -139,7 +139,7 @@ python flight_tracker.py
 * `TRAVEL_DURATION`：旅遊天數 (例如 `5`)
 * `TOP_N_RESULTS`：推薦票價組數 (例如 `5`)
 * `PRICE_THRESHOLD`：LINE 通知價格門檻 (例如 `8000`)
-* `RECIPIENT_EMAIL`：接收通知的收件人信箱 (例如 `recipient@example.com`)
+* `RECIPIENT_EMAIL`：接收通知的收件人信箱 (例如 `a@example.com,b@example.com`，多筆請以半形逗號隔開)
 
 ---
 
