@@ -119,10 +119,12 @@ python flight_tracker.py
 在執行工作流之前，請登入您的 GitHub 專案，前往 **Settings** -> **Secrets and variables** -> **Actions**，並在裡面設定以下項目：
 
 #### 🔒 Secrets (機密金鑰，不可公開)
-請至 **Secrets** 分頁中新增以下三個儲存庫機密：
+請至 **Secrets** 分頁中新增以下五個儲存庫機密：
 * `API_KEY`：您的 SerpApi 帳號金鑰。
 * `LINE_ACCESS_TOKEN`：您的 LINE Channel Access Token。
 * `LINE_USER_ID`：您的 LINE 帳號 User ID。
+* `BREVO_API_KEY`：您的 Brevo API 金鑰。
+* `SENDER_EMAIL`：已在 Brevo 驗證的寄件人信箱。
 
 #### ⚙️ Variables (常規設定，明文變數)
 請至 **Variables** 分頁中新增以下變數（當排程自動執行，或手動執行時欄位留空，會自動套用此處的設定作為預設值）：
@@ -134,6 +136,7 @@ python flight_tracker.py
 * `TRAVEL_DURATION`：旅遊天數 (例如 `5`)
 * `TOP_N_RESULTS`：推薦票價組數 (例如 `5`)
 * `PRICE_THRESHOLD`：LINE 通知價格門檻 (例如 `8000`)
+* `RECIPIENT_EMAIL`：接收通知的收件人信箱 (例如 `recipient@example.com`)
 
 ---
 

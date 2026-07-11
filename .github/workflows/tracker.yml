@@ -69,7 +69,7 @@ jobs:
         # Brevo Email 設定 (須設定在 GitHub Repository Secrets 中)
         BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
         SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-        RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+        RECIPIENT_EMAIL: ${{ vars.RECIPIENT_EMAIL }}
         
         # 航班與搜尋設定 (優先級：手動輸入值 > GitHub Variables 環境變數 > 程式預設值)
         FLY_FROM: ${{ github.event.inputs.fly_from || vars.FLY_FROM || 'TPE' }}
