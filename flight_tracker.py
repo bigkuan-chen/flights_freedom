@@ -138,6 +138,12 @@ LINE_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN") or os.getenv("LINE_AC
 LINE_USER_ID = os.getenv("LINE_USER_ID")
 # ================================================
 
+# ================= Brevo E-mail 設定 =============
+BREVO_API_KEY = os.getenv("BREVO_API_KEY")
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL")
+# ================================================
+
 def send_line_message(message_text):
     """使用 Messaging API 發送 LINE 官方帳號訊息"""
     if not LINE_ACCESS_TOKEN or not LINE_USER_ID:
@@ -167,6 +173,45 @@ def send_line_message(message_text):
         print("LINE 官方帳號通知發送成功！")
     except Exception as e:
         print(f"LINE 發送失敗: {e}")
+
+def send_email_notification(subject, message_text):
+    """使用 Brevo API 發送 E-mail 通知"""
+    if not BREVO_API_KEY or not SENDER_EMAIL or not RECIPIENT_EMAIL:
+        print("錯誤：找不到 BREVO_API_KEY、SENDER_EMAIL 或 RECIPIENT_EMAIL，無法發送 E-mail 通知。")
+        return
+        
+    url = "https://api.brevo.com/v3/smtp/email"
+    headers = {
+        "accept": "application/json",
+        "api-key": BREVO_API_KEY,
+        "content-type": "application/json"
+    }
+    
+    # 轉換換行符號以符合 HTML 格式
+    html_content = f"<html><body><div style='font-family: sans-serif; line-height: 1.6;'>{message_text.replace(chr(10), '<br>')}</div></body></html>"
+    
+    payload = {
+        "sender": {
+            "name": "Flight Tracker",
+            "email": SENDER_EMAIL
+        },
+        "to": [
+            {
+                "email": RECIPIENT_EMAIL,
+                "name": "Flight Tracker Subscriber"
+            }
+        ],
+        "subject": subject,
+        "htmlContent": html_content,
+        "textContent": message_text
+    }
+    
+    try:
+        response = requests.post(url, headers=headers, json=payload)
+        response.raise_for_status()
+        print("E-mail 通知發送成功！")
+    except Exception as e:
+        print(f"E-mail 發送失敗: {e}")
 
 def main():
     init_db()
@@ -263,6 +308,10 @@ def main():
             message_text = "\n".join(message_lines)
             
         send_line_message(message_text)
+        
+        # 發送 E-mail 通知
+        subject = f"✈️ 【機票降價通知】{FLY_FROM} ➡️ {FLY_TO}"
+        send_email_notification(subject, message_text)
     else:
         print("價格均未達通知標準。")
 
