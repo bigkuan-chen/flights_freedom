@@ -4,7 +4,40 @@ on:
   schedule:
     # 這裡使用 Cron 語法，例如每 6 小時執行一次 (UTC 時間)
     - cron: '0 */6 * * *'
-  workflow_dispatch: # 允許手動點擊執行
+  workflow_dispatch: # 允許手動點擊執行並輸入參數
+    inputs:
+      fly_from:
+        description: '出發機場 (例如 TPE)'
+        required: true
+        default: 'TPE'
+      fly_to:
+        description: '目的地機場 (例如 DAD)'
+        required: true
+        default: 'DAD'
+      search_mode:
+        description: '搜尋模式 (range 或 single)'
+        required: true
+        default: 'range'
+      range_start:
+        description: '區間開始日期 (YYYY-MM-DD)'
+        required: true
+        default: '2026-10-03'
+      range_end:
+        description: '區間結束日期 (YYYY-MM-DD)'
+        required: true
+        default: '2026-10-09'
+      travel_duration:
+        description: '旅遊天數'
+        required: true
+        default: '5'
+      top_n_results:
+        description: '回傳前幾便宜的組合'
+        required: true
+        default: '3'
+      price_threshold:
+        description: 'LINE 通知價格門檻'
+        required: true
+        default: '8000'
 
 jobs:
   run-tracker:
@@ -33,15 +66,15 @@ jobs:
         LINE_ACCESS_TOKEN: ${{ secrets.LINE_ACCESS_TOKEN }}
         LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
         
-        # 航班與搜尋設定 (可直接在此工作流檔案中修改，無需加入 .gitignore)
-        FLY_FROM: TPE
-        FLY_TO: DAD
-        SEARCH_MODE: range
-        RANGE_START: 2026-10-03
-        RANGE_END: 2026-10-09
-        TRAVEL_DURATION: 5
-        TOP_N_RESULTS: 3
-        PRICE_THRESHOLD: 8000
+        # 航班與搜尋設定 (手動執行時優先使用輸入值，定時排程則使用預設值)
+        FLY_FROM: ${{ github.event.inputs.fly_from || 'TPE' }}
+        FLY_TO: ${{ github.event.inputs.fly_to || 'DAD' }}
+        SEARCH_MODE: ${{ github.event.inputs.search_mode || 'range' }}
+        RANGE_START: ${{ github.event.inputs.range_start || '2026-10-03' }}
+        RANGE_END: ${{ github.event.inputs.range_end || '2026-10-09' }}
+        TRAVEL_DURATION: ${{ github.event.inputs.travel_duration || '5' }}
+        TOP_N_RESULTS: ${{ github.event.inputs.top_n_results || '3' }}
+        PRICE_THRESHOLD: ${{ github.event.inputs.price_threshold || '8000' }}
       run: python flight_tracker.py
 
     - name: Commit and Push DB Changes
