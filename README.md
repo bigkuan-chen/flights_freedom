@@ -1,6 +1,6 @@
 # ✈️ Google Flights 機票降價追蹤通知器 (Flight Tracker)
 
-這是一個基於 Python 開發的**機票降價監控與自動通知系統**。系統能透過 [SerpApi (Google Flights)](https://serpapi.com/google-flights-api) 查詢即時航班票價，並結合本地端 SQLite 資料庫進行歷史低價比對。當票價創歷史新低或低於理想預算時，會自動透過 **LINE Messaging API** 發送精美格式的私訊通知到您的 LINE 帳號。
+這是一個基於 Python 開發的**機票降價監控與自動通知系統**。系統能透過 [SerpApi (Google Flights)](https://serpapi.com/google-flights-api) 查詢即時航班票價，並結合本地端 SQLite 資料庫進行歷史低價比對。當票價創歷史新低或低於理想預算時，會自動透過 **LINE Messaging API** 以及 **Brevo (SMTP REST API) 電子郵件** 發送精美格式的降價通知。
 
 ---
 
@@ -14,8 +14,9 @@
 3. **歷史票價追蹤 (SQLite)**：
    * 整合 SQLite 本地資料庫 (`flights_history.db`)，每當查詢時會自動記錄時間、航線、起訖日、票價與 Google Flights 連結。
    * 自動進行**同日期組合**的歷史票價比對，判斷是否降價。
-4. **LINE 自動推播通知**：
-   * 當查到票價低於您的預設「理想預算」或「低於該日期的歷史最低價」時，系統會自動透過 LINE Messaging API 發送降價警報。
+4. **雙通道自動通知**：
+   * **LINE 通知**：當查到票價低於您的預設「理想預算」或「低於該日期的歷史最低價」時，系統會自動透過 LINE Messaging API 發送私訊警報。
+   * **E-mail 通知**：同步整合 **Brevo (原 Sendinblue) 郵件發送服務**，自動將格式化後的降價通知信寄送至您指定的信箱（支援 HTML 格式化換行閱讀）。
    * 區間搜尋下會整合多個推薦組合為一則訊息，並附上每組的 Google Flights 直達訂票連結，避免洗版。
 
 ---
@@ -25,7 +26,9 @@
 * **開發語言**：Python 3.12+
 * **即時票價數據來源**：[SerpApi](https://serpapi.com/) 的 `google_flights` 搜尋引擎。
 * **資料儲存**：SQLite（Python 內建資料庫，免安裝設定）。
-* **通知通道**：LINE Messaging API (Push Message)。
+* **通知通道**：
+  * LINE Messaging API (Push Message)
+  * Brevo Transactional Email API (REST API V3)
 * **第三方套件**：
   * `requests`：用於發送 API 網路請求。
 
