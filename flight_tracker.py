@@ -212,6 +212,10 @@ def send_email_notification(subject, message_text):
         print("E-mail 通知發送成功！")
     except Exception as e:
         print(f"E-mail 發送失敗: {e}")
+        try:
+            print(f"錯誤詳情: {response.text}")
+        except:
+            pass
 
 def main():
     init_db()
