@@ -38,6 +38,10 @@ on:
         description: 'LINE 通知價格門檻 (留空則讀取 GitHub Variables)'
         required: false
         default: ''
+      recipient_email:
+        description: '收件人信箱 (留空則讀取 GitHub Variables)'
+        required: false
+        default: ''
 
 jobs:
   run-tracker:
@@ -69,7 +73,7 @@ jobs:
         # Brevo Email 設定 (須設定在 GitHub Repository Secrets 中)
         BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
         SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-        RECIPIENT_EMAIL: ${{ vars.RECIPIENT_EMAIL }}
+        RECIPIENT_EMAIL: ${{ github.event.inputs.recipient_email || vars.RECIPIENT_EMAIL }}
         
         # 航班與搜尋設定 (優先級：手動輸入值 > GitHub Variables 環境變數 > 程式預設值)
         FLY_FROM: ${{ github.event.inputs.fly_from || vars.FLY_FROM || 'TPE' }}
