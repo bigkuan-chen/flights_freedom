@@ -3,7 +3,7 @@ name: Flight Tracker Cron Job
 on:
   schedule:
     # 這裡使用 Cron 語法，例如每 6 小時執行一次 (UTC 時間)
-    - cron: '0 0 */2 * *'
+    - cron: '0 0 * * *'
   workflow_dispatch: # 允許手動點擊執行並輸入參數
     inputs:
       fly_from:

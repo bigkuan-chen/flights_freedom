@@ -143,7 +143,7 @@ python flight_tracker.py
 ### 2. 如何執行與管理
 
 #### 📅 定時自動排程 (Cron)
-目前 [.github/workflows/tracker.yml](file:///d:/NCNU_AI_CLASS/project/flights_freedom/.github/workflows/tracker.yml) 設定為**每兩天執行一次**。它會全自動在雲端以您設定的 GitHub Variables 做為搜尋條件執行。
+目前 [.github/workflows/tracker.yml](file:///d:/NCNU_AI_CLASS/project/flights_freedom/.github/workflows/tracker.yml) 設定為**每天執行一次**。它會全自動在雲端以您設定的 GitHub Variables 做為搜尋條件執行。
 
 #### ⚡ 手動即時執行 (自訂參數)
 如果您想臨時修改目的地、出發日或價格門檻來查詢，完全不需要修改任何程式碼：
