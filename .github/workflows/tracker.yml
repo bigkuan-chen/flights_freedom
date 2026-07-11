@@ -1,0 +1,53 @@
+name: Flight Tracker Cron Job
+
+on:
+  schedule:
+    # 這裡使用 Cron 語法，例如每 6 小時執行一次 (UTC 時間)
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # 允許手動點擊執行
+
+jobs:
+  run-tracker:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 確保 Github Actions 有權限能 commit & push 歷史票價資料庫
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Run Script
+      env:
+        # 敏感金鑰 (須設定在 GitHub Repository Secrets 中)
+        API_KEY: ${{ secrets.API_KEY }}
+        LINE_ACCESS_TOKEN: ${{ secrets.LINE_ACCESS_TOKEN }}
+        LINE_USER_ID: ${{ secrets.LINE_USER_ID }}
+        
+        # 航班與搜尋設定 (可直接在此工作流檔案中修改，無需加入 .gitignore)
+        FLY_FROM: TPE
+        FLY_TO: DAD
+        SEARCH_MODE: range
+        RANGE_START: 2026-10-03
+        RANGE_END: 2026-10-09
+        TRAVEL_DURATION: 5
+        TOP_N_RESULTS: 3
+        PRICE_THRESHOLD: 8000
+      run: python flight_tracker.py
+
+    - name: Commit and Push DB Changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add flights_history.db
+        # 只有在資料庫有更新時才 commit，避免報錯
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update price history DB" && git push)
