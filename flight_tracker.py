@@ -14,28 +14,30 @@ if os.path.exists(".env"):
 
 # ================= 配置設定 =================
 API_KEY = os.getenv("API_KEY")
+if API_KEY:
+    API_KEY = API_KEY.strip()
 
 # 航線設定
-FLY_FROM = os.getenv("FLY_FROM", "TPE")
-FLY_TO = os.getenv("FLY_TO", "DAD")
+FLY_FROM = os.getenv("FLY_FROM", "TPE").strip()
+FLY_TO = os.getenv("FLY_TO", "DAD").strip()
 
 # 模式選擇: "single" 表示查詢單一特定起迄日，"range" 表示查詢區間內固定天數的組合
-SEARCH_MODE = os.getenv("SEARCH_MODE", "range")
+SEARCH_MODE = os.getenv("SEARCH_MODE", "range").strip()
 
 # 1. 單一起迄日模式參數 (SEARCH_MODE = "single" 時使用)
-DATE_FROM = os.getenv("DATE_FROM", "2026-10-03")
-DATE_TO = os.getenv("DATE_TO", "2026-10-09")
+DATE_FROM = os.getenv("DATE_FROM", "2026-10-03").strip()
+DATE_TO = os.getenv("DATE_TO", "2026-10-09").strip()
 
 # 2. 區間搜尋模式參數 (SEARCH_MODE = "range" 時使用)
-RANGE_START = os.getenv("RANGE_START", "2026-10-03")
-RANGE_END = os.getenv("RANGE_END", "2026-10-09")
-TRAVEL_DURATION = int(os.getenv("TRAVEL_DURATION", "5"))
-TOP_N_RESULTS = int(os.getenv("TOP_N_RESULTS", "3"))
+RANGE_START = os.getenv("RANGE_START", "2026-10-03").strip()
+RANGE_END = os.getenv("RANGE_END", "2026-10-09").strip()
+TRAVEL_DURATION = int(os.getenv("TRAVEL_DURATION", "5").strip())
+TOP_N_RESULTS = int(os.getenv("TOP_N_RESULTS", "3").strip())
 
 # 通知的價格門檻
-PRICE_THRESHOLD = int(os.getenv("PRICE_THRESHOLD", "8000"))
+PRICE_THRESHOLD = int(os.getenv("PRICE_THRESHOLD", "8000").strip())
 
-DB_NAME = os.getenv("DB_NAME", "flights_history.db")
+DB_NAME = os.getenv("DB_NAME", "flights_history.db").strip()
 # ============================================
 
 def init_db():
@@ -135,13 +137,23 @@ def search_flight(outbound_date, return_date):
 # ================= LINE API 設定 =================
 # 請將這兩個變數設定到 .env、環境變數或 GitHub Secrets 中
 LINE_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN") or os.getenv("LINE_ACCESS_TOKEN")
+if LINE_ACCESS_TOKEN:
+    LINE_ACCESS_TOKEN = LINE_ACCESS_TOKEN.strip()
 LINE_USER_ID = os.getenv("LINE_USER_ID")
+if LINE_USER_ID:
+    LINE_USER_ID = LINE_USER_ID.strip()
 # ================================================
 
 # ================= Brevo E-mail 設定 =============
 BREVO_API_KEY = os.getenv("BREVO_API_KEY")
+if BREVO_API_KEY:
+    BREVO_API_KEY = BREVO_API_KEY.strip()
 SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+if SENDER_EMAIL:
+    SENDER_EMAIL = SENDER_EMAIL.strip()
 RECIPIENT_EMAIL = os.getenv("RECIPIENT_EMAIL")
+if RECIPIENT_EMAIL:
+    RECIPIENT_EMAIL = RECIPIENT_EMAIL.strip()
 # ================================================
 
 def send_line_message(message_text):
