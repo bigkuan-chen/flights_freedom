@@ -95,21 +95,14 @@ python flight_tracker.py
 ```
 
 ### 4. 訊息通知範例
-當觸發降價條件時，您的 LINE 就會收到如下的即時通知：
 
-```text
-✈️ 【機票降價通知 (區間搜尋)】
-航線：TPE ➡️ DAD (旅遊天數: 5天)
-最便宜的前幾名組合：
+當觸發降價條件時，系統會同時透過 **Email** 與 **LINE** 發送即時降價通知：
 
-1. 2026-10-03 ➡️ 2026-10-08
-   票價：NT$ 6492 (歷史最低: NT$ 6492)
-   連結：https://www.google.com/travel/flights...
+#### 📧 Email 通知範例
+![Email 降價通知](images/email_notification.png)
 
-2. 2026-10-04 ➡️ 2026-10-09
-   票價：NT$ 11233 (歷史最低: NT$ 11233)
-   連結：https://www.google.com/travel/flights...
-```
+#### 💬 LINE 通知範例
+![LINE 降價通知](images/line_notification.png)
 
 ---
 
